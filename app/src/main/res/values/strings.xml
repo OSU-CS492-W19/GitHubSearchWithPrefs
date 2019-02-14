@@ -11,4 +11,7 @@
     <string name="pref_sort_key" translatable="false">pref_sort</string>
     <string name="pref_sort_title">Sort by</string>
     <string name="pref_sort_default">stars</string>
+
+    <string name="pref_user_key">pref_user</string>
+    <string name="pref_user_title">User</string>
 </resources>
