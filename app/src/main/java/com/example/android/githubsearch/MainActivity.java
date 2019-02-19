@@ -1,6 +1,7 @@
 package com.example.android.githubsearch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -95,7 +97,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void doGitHubSearch(String query) {
-        String url = GitHubUtils.buildGitHubSearchURL(query);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sort = preferences.getString(
+                getString(R.string.pref_sort_key), getString(R.string.pref_sort_default)
+        );
+        String language = preferences.getString(
+                getString(R.string.pref_language_key), getString(R.string.pref_language_default)
+        );
+        String user = preferences.getString(getString(R.string.pref_user_key), "");
+        boolean searchInName = preferences.getBoolean(getString(R.string.pref_in_name_key), true);
+        boolean searchInDescription = preferences.getBoolean(getString(R.string.pref_in_description_key), true);
+        boolean searchInReadme = preferences.getBoolean(getString(R.string.pref_in_readme_key), false);
+
+        String url = GitHubUtils.buildGitHubSearchURL(query, sort, language, user, searchInName,
+                searchInDescription, searchInReadme);
         Log.d(TAG, "querying search URL: " + url);
 
         Bundle args = new Bundle();
